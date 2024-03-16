@@ -19,15 +19,15 @@ const theme = createTheme({
   },
 });
 
-const Login = () => {
+const Signup = () => {
   const [mode, setMode] = useState('User'); // Default mode is User
 
   const handleModeChange = () => {
     setMode(mode === 'User' ? 'Organization' : 'User');
   };
 
-  const handleLogin = () => {
-    // Add your login logic here
+  const handleSignup = () => {
+    // Add your signup logic here
   };
 
   return (
@@ -36,11 +36,19 @@ const Login = () => {
         <Card variant="outlined" style={{ width: 300 }}>
           <CardContent>
             <Typography variant="h5" component="div" gutterBottom>
-              Login
+              Signup
             </Typography>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSignup}>
               <TextField
                 label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                color="secondary"
+              />
+              <TextField
+                label="Email"
+                type="email"
                 variant="outlined"
                 fullWidth
                 margin="normal"
@@ -60,11 +68,10 @@ const Login = () => {
                   checked={mode === 'Organization'}
                   onChange={handleModeChange}
                   color="primary"
-                />
-                <Typography variant="body1" style={{ marginRight: 10 }}>Organization</Typography>
+                /> <Typography variant="body1" style={{ marginRight: 10 }}>Organization</Typography>
               </div>
               <Button type="submit" variant="contained" color="primary" fullWidth>
-                Login
+                Signup
               </Button>
             </form>
           </CardContent>
@@ -74,4 +81,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

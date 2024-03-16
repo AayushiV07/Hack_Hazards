@@ -13,7 +13,7 @@ const Navbar = () => {
     <nav className='bg-white md:px-14 p-4 max-w-screen-2xl max-auto text-primary fixed-top-0'>
       <div className='text-lg container mx-auto flex justify-between items-center font-medium'>
         <div className='flex space-x-14 items-center'>
-          <a href="/" className='text-2xl font-semibold flex items-center space-x-4 text-primary'><img src={logo} alt=" " className='h-11 w-11 inline-block items-center' /><span>E-bye</span> </a>
+          <a href="/" className='text-2xl font-semibold flex items-center space-x-4 text-primary'><img src={logo} alt=" " className='h-12 w-11 inline-block items-center' /><span>E-bye</span> </a>
 
           <ul className='md:flex space-x-12 hidden'>
             {navItems.map(({ link, path }) => (
