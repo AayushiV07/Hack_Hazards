@@ -1,11 +1,9 @@
-const express = ("express");
+const express = require("express");
 const { authenticateJwt, USERSECRET } = require("../middleware/auth");
-const { User, Course } = require("../db/db");
+const {  User, Device, SoldDevice } = require("../db/db");
 const jwt = require("jsonwebtoken");
 
 const router = express.Router();
-
-//TODO: add comments everywhere
 
 router.post("/signup", async (req, res) => {
   const { username, password } = req.body;
@@ -36,81 +34,99 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/courses", authenticateJwt, async (req, res) => {
-  const courses = await Course.find({ published: true });
-  res.json({ courses });
+router.get("/devices", authenticateJwt, async (req, res) => {
+  const devices = await Device.find({});
+  res.json({devices});
 });
 
-router.get("/courses/:courseId", authenticateJwt, async (req, res) => {
-  //list out a single  course
-  const course = await Course.findById(req.params.courseId);
-  if (course) {
-    res.json({ course });
+// this is to view 1 device at a time, /purchase
+router.get("/devices/:deviceId", authenticateJwt, async (req, res) => {
+  //list out a single  device
+  const device = await SoldDevice.findById(req.params.deviceId);
+  if (device) {
+    res.json({ device });
   } else {
-    res.status(405).json({ message: "Course not found" });
+    res.status(405).json({ message: "Device not found" });
   }
 });
 
-router.post("/courses/:courseId", authenticateJwt, async (req, res) => {
-  // purchase a course
-  console.log("about to buy a course");
-  const course = await Course.findById(req.params.courseId);
-  console.log("you are about to purchase this course: ", course);
-  if (course) {
+// to buy devices, /purchase
+router.post("/devices/:deviceId", authenticateJwt, async (req, res) => {
+  // purchase a device
+  console.log("about to purchase a device");
+  const device = await Device.findById(req.params.deviceId);
+  console.log("you are about to purchase this device: ", device);
+  if (device) {
     const user = await User.findOne({ username: req.user.username });
-    console.log("while purchasing the course, the user is: ", user);
+    console.log("while purchasing the device, the user is: ", user);
     if (user) {
-      const alreadyPurchased = user.purchasedCourses.some((purchasedCourse) =>
-        purchasedCourse.equals(course._id)
+      const alreadyPurchased = user.purchasedDevices.some((purchasedDevices) =>
+      purchasedDevices.equals(device._id)
       );
       if (alreadyPurchased) {
-        console.log("user has already purchased this course");
+        console.log("user has already purchased this device");
         return res
           .status(409)
-          .json({ message: "User has already purchased this course" });
+          .json({ message: "User has already purchased this device" });
       }
-      user.purchasedCourses.push(course);
+      user.purchasedCourses.push(device);
       await user.save();
-      res.json({ message: "Course purchased successfully" });
+      res.json({ message: "Device purchased successfully" });
     } else {
       res.status(403).json({ message: "User not found" });
     }
   } else {
-    res.status(404).json({ message: "Course not found" });
+    res.status(404).json({ message: "Device not found" });
   }
 });
 
-router.get("/purchasedCourses", authenticateJwt, async (req, res) => {
+
+router.get("/purchasedDevices", authenticateJwt, async (req, res) => {
   //list purchased courses
   const user = await User.findOne({ username: req.user.username }).populate(
-    "purchasedCourses" //means to list out the "purchasedCourses" of each user
+    "purchasedDevices" //means to list out the "purchasedDevices" of each user
   );
   if (user) {
-    res.json({ purchasedCourses: user.purchasedCourses || [] }); //if user.purchasedCourses is empty, return an empty array
+    res.json({ purchasedDevices: user.purchasedDevices || [] }); //if user.purchasedDevices is empty, return an empty array
   } else {
     res.status(403).json({ message: "User not found" });
   }
 });
 
-router.delete("/courses/:courseId", authenticateJwt, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username });
-  const courseIdToRemove = req.params.courseId;
-  console.log("while deleting, user is: ", user);
-  if (user) {
-    User.findOneAndUpdate(
-      { _id: user._id },
-      { $pull: { purchasedCourses: courseIdToRemove } },
-      { new: true },).then((response)=>{
-        console.log("updatedUser is: ", response);
-        res.status(200).json({ message: "Deleted!" });
-      }).catch((error)=>{
-        console.log(
-          "encountered an error while deleting the purchase: ",
-          error
-        );
-        res.json(407).json({ message: "Internal server error" });
-      })
-      }
+
+
+
+
+// to sell devices, /sell
+router.post("/selldevice", authenticateJwt, async (req, res) => {
+  // sell a device
+  console.log("about to sell a device");
+  const device = new Device(req.body);
+  await device.save();
+  res.json({ message: "Device uploaded successfully", deviceId: device.id });
 });
+
+
+
+// router.delete("/courses/:courseId", authenticateJwt, async (req, res) => {
+//   const user = await User.findOne({ username: req.user.username });
+//   const courseIdToRemove = req.params.courseId;
+//   console.log("while deleting, user is: ", user);
+//   if (user) {
+//     User.findOneAndUpdate(
+//       { _id: user._id },
+//       { $pull: { purchasedCourses: courseIdToRemove } },
+//       { new: true },).then((response)=>{
+//         console.log("updatedUser is: ", response);
+//         res.status(200).json({ message: "Deleted!" });
+//       }).catch((error)=>{
+//         console.log(
+//           "encountered an error while deleting the purchase: ",
+//           error
+//         );
+//         res.json(407).json({ message: "Internal server error" });
+//       })
+//       }
+// });
 
 module.exports = router;

@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const express = require('express');
 
+// import jwt from 'jsonwebtoken';
+// import express from 'express';
+
 const ORGSECRET = 'SECr3t'; //TODO: Should be in an environment variable
 const USERSECRET = "enC0d33d";
 
@@ -37,5 +40,6 @@ const authenticateJwt = (req, res, next) => {
 };
 
 module.exports = { authenticateJwt, ORGSECRET, USERSECRET };
+
 
 // earlier we were not using try catch, and since jwt.verify is an asynchronous function, we were getting an error. look at this to learn more: https://g.co/gemini/share/c58ef706da94
