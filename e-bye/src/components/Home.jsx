@@ -1,6 +1,11 @@
 import banner from '../assets/home-image.png'
 import Banner from '../shared/Banner';
 const Home = () => {
+  const Home = [
+    { link: "btn1", path: "sell" }
+    // { link: "Features", path: "features" },
+
+  ];
   return (
     <div className="md:px-10 p-4 max-w-screen-2xl mx-auto mt-20" id='home' >
       <Banner banner={banner} heading="E-bye is a Webapp that is promoting Recyling over Replacement "
