@@ -21,9 +21,9 @@ const About = () => {
           viewport={{ once: false, amount: 0.7 }}
         className='md:w-2/5'>
           <h2 className='md:text-5xl text-3xl font-bold text-primary mb-5 leading-normal'>
-            Lorem ipsum dolor sit amet consectetur <span className='text-secondary'>adipisicing elit. Eligendi.</span>
+          Innovative Tech Recycling Programs<span className='text-secondary md:text-4xl' > Revolutionizing Sustainable Disposal Practices</span>
           </h2>
-          <p className='text-tertiary text-lg mb-7'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non dolorum veritatis repellat ut quae corrupti rerum beatae ipsum facilis laborum.</p>
+          <p className='text-tertiary text-lg mb-7'>Recycling made easy with eBuy. Our innovative tech recycling programs provide users with convenient options for responsibly disposing of their old devices. Whether it's through our mail-in recycling service or partnering with local electronics recycling centers, we make it simple for individuals and businesses to reduce their environmental footprint.</p>
           <button className='btnPrimary'>Read more</button>
         </motion.div>
       </div>

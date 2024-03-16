@@ -19,6 +19,12 @@ const Purchase = () => {
             year="2022"
             price="$149.99"
           />
+          <Product
+            image="product1.jpg"
+            name="Carbon Monitoring System 1"
+            year="2023"
+            price="$99.99"
+          />
           {/* Add more Product components as needed */}
         </div>
       </div>
